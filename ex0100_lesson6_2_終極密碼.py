@@ -26,28 +26,30 @@ while True:
     target=int(keyin)
 
 
-    if bomb==target:
+    if bomb==target: #遊戲結束了
         print (f"GAME OVER! 終極密碼就是{bomb}")
         print (f"總共猜了{count}次")
         cont=input("是否還要繼續(Y/N)")
-        if cont=="n" or cont=="N":
+        #+++++++++++++確認使用者要不要繼續++++++++++++++++++++++++++++++++++++++++
+        if cont=="n" or cont=="N":#使用者不要繼續
             break
-        elif cont=="Y" or cont=="Y":
+        elif cont=="Y" or cont=="Y":#使用者要繼續
             count=0
             min=0
             max=10
-            continue    
+            continue
         else:
             print("byebye")
         break
+        #+++++++++++++確認使用者要不要繼續++++++++++++++++++++++++++++++++++++++++==>老師建議改兩層While
 
-    elif target<min or target>max:
+    elif target<min or target>max: #非翻圍內
         print (f"這不是一個{min}~{max}間的數字")
         count-=1
         continue
-    elif target >bomb:
+    elif target >bomb:  #改上限
         max=target
         continue
-    else:
+    else: #改下限
         min=target
         continue
