@@ -18,11 +18,10 @@ while True:
     count+=1
     target=int(input(f"請輸入一個[{min}~{max}間的數字"))
     if bomb==target:
-        print(f"你輸了! 終極密碼就是{bomb}")
+        print (f"你輸了! 終極密碼就是{bomb}")
         break
-    elif target<min or target>max:5
-    
-        print(f"這不是一個[{min}~{max}間的數字")
+    elif target<min or target>max:
+        print (f"這不是一個[{min}~{max}間的數字")
         continue
     elif target >bomb:
         max=target
