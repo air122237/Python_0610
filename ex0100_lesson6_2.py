@@ -2,7 +2,7 @@
 
 import random
 
-times=int(input(f"幾次how many random number you need?"))
+times=int(input(f"how many random number you need?"))
 
 for i in range(0,times):
     i+=1
