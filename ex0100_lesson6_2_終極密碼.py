@@ -9,7 +9,7 @@ import random
 min=0
 max=10
 count=0
-bomb= random.randint(min,max-1)
+bomb= random.randint(min,max-1) #隨機生成終極密碼
 #    print (f"random number is {bomb}")
 print("============終極密碼============")
 
