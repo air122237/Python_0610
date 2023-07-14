@@ -20,7 +20,7 @@ while True:
     keyin=input(f"請輸入一個{min}~{max}間的數字")
     
     if not keyin.isnumeric():
-        print (f"這不是一個{min}~{max}間的數字")
+        print (f"這不是一個數字")
         count-=1
         continue
     target=int(keyin)
