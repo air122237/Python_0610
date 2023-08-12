@@ -6,13 +6,6 @@ import os
 import pandas as pd
 import streamlit as st
 
-def get_csvName()->str:
-    taiwan_timezone = pytz.timezone('Asia/Taipei')
-    current_date = datetime.now(taiwan_timezone)
-    
-    fileName = f"{current_date.year}-{current_date.strftime('%m')}-{current_date.day}.csv"
-    return fileName
-
 def download_data()->dict:
     url = 'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON'
 
@@ -40,43 +33,53 @@ def jsonDict_csvList(json)->list[dict]:
         weather_list.append(city_item)
     return weather_list
 
-def get_fileName_path()->str:
+def save_csv(data:list[dict],fileName) -> bool:
+    '''
+    - 將list[dict]儲存
+    - 參數fileName要儲存的檔案名
+    '''    
+    with open(fileName,mode='w',encoding='utf-8',newline='') as file:
+        fieldnames = ['城市', '啟始時間','結束時間','最高溫度','最低溫度','感覺']
+        writer = csv.DictWriter(file,fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(data)
+    return True
+
+def get_csvName()->str:
+    '''
+    - 取得台灣目前year-month-day.csv
+    '''
+    taiwan_timezone = pytz.timezone('Asia/Taipei')
+    current_date = datetime.now(taiwan_timezone)    
+    fileName = f"{current_date.year}-{current_date.month}-{current_date.day}.csv"
+    return fileName
+
+def  get_fileName_path()->str:
     csvFileName = get_csvName()
     current_cwd = os.path.abspath(os.getcwd())
     abs_file_path = os.path.join(current_cwd,'data',csvFileName)
-    #print(abs_file_path)
     return abs_file_path
 
+
 def check_file_exist()->bool:
-    abs_file_path=()
-    
+    abs_file_path = get_fileName_path()    
     if os.path.exists(abs_file_path):
         return True
     else:
         return False
 
-def save_csv(data:list[dict],fileName) -> None:
-    '''
-    - 將list[dict]儲存
-    - 參數fileName要儲存的檔案名
-    '''
-    with open(fileName,mode='w',encoding='utf-8',newline='') as file:
-        fieldname = ['城市', '啟始時間','結束時間','最高溫度','最低溫度','感覺']
-        writer = csv.DictWriter(file,fieldnames=fieldname)
-        writer.writeheader()
-        writer.writerows(data)
-    return True
-
 if not check_file_exist():
     print("不存在")
     json_data = download_data()
     csv_list = jsonDict_csvList(json_data)
-    is_save=save_csv(csv_list,()) 
+    is_save = save_csv(csv_list,get_fileName_path())
     if is_save:
         print("存檔成功")
-else:
-    print("存在")
 
-file_path=()
+file_path = get_fileName_path()
 dataFrame = pd.read_csv(file_path)
-st.dataframe(dataFrame,width=1000,height=800)
+#顯示標題
+st.title("台灣個縣市氣候:")
+st.subheader("攝氐")
+#顯非DataFrame
+st.dataframe(dataFrame,width=800,height=900)
